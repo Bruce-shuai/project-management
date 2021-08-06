@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 
-const isFalse = (value) => {
+const isFalse = (value: any) => {
   return value === 0 ? false : !value;
 };
-export const cleanObject = (object) => {
+// 这里直接对对象定义为object类型
+export const cleanObject = (object: object) => {
   const newObject = { ...object };
   Object.keys(newObject).forEach((key) => {
     // console.log('---');
+    // @ts-ignore   ts-ignore 用法也感觉挺神奇的
     if (isFalse(newObject[key])) {
+      // @ts-ignore
       delete newObject[key];
     }
   });
@@ -16,15 +19,15 @@ export const cleanObject = (object) => {
 };
 
 /* 自定义空数组useEffect钩子 */
-export const useMount = (callback) => {
+export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
   }, []);
 };
 
 /* 自定义防抖钩子 */
-// 可以作为模板，但最好自己写熟，且知道每行代码有啥意义!
-export const useDebounce = (value, delay) => {
+// 可以作为模板，但最好自己写熟，且知道每行代码有啥意义!  // 参数可传递可不传递用？
+export const useDebounce = (value: any, delay?: number) => {
   const [debounceValue, setDebounceValue] = useState(value);
 
   useEffect(() => {
