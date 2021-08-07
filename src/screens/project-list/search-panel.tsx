@@ -6,6 +6,7 @@ export interface User {
   email: string; // 这下面的属性是自创的？！
   title: string;
   organization: string;
+  token: string;
 }
 
 interface SearchPanelProps {
