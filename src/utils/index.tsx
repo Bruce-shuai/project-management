@@ -43,13 +43,23 @@ export const useDebounce = (value: any, delay?: number) => {
   return debounceValue;
 };
 
-// 这个是有误的
-// export const useDebounce = (value, delay) => {
-//   let timeout;
-//   useEffect(() => {
-//     if (timeout) {
-//       clearTimeout(timeout)
-//     }
-//     timeout = setTimeout((value) => {return value}, delay)
-//   }, [value, delay])
-// }
+// 似乎箭头函数使用泛型 不能直接写成 <T> 而是应该写成 T extends unknown
+export const useArray = <T extends unknown>(param: T[]) => {
+  // array 命名 首字母应该不用大写
+  const [array, setArray] = useState(param); // 有一个问题，这useState应该不会对传入的参数进行修改吧？！
+  console.log("param", param);
+  console.log("array", array);
+
+  return {
+    add: (item: T) => {
+      setArray([...array, item]);
+    }, // 这里 双越教程好像在setState那里有讲不可变值增加数据的方法
+    removeIndex: (num: number) => {
+      setArray(array.slice(num + 1));
+    }, // slice 是 返回一个新的数组，符合不可变值的思想
+    clear: () => {
+      setArray([]);
+    }, // 清空数组内容
+    value: array,
+  };
+};
