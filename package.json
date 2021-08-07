@@ -11,6 +11,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "eslint-config-prettier": "^8.3.0",
+    "jira-dev-tool": "^1.7.61",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
@@ -53,5 +54,8 @@
   },
   "lint-staged": {
     "*.{js,css,md,ts ,tsx}": "prettier --write"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
