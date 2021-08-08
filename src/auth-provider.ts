@@ -12,10 +12,11 @@ export const getToken = () => {
 // 这里的es6 解构user 的ts类型定义 比较有特点，记一记
 export const handleUserResponse = ({user}: {user: User}) => {
   window.localStorage.setItem(localStorageKey, user.token || '')
+  return user;
 }
 
 /* 用户登录的函数 */
-const login = async (data: {username: string, password: string}) => {
+export const login = async (data: {username: string, password: string}) => {
   const response = await fetch(`${apiUrl}/login`, {
     method: 'POST',
     headers: {
@@ -25,12 +26,14 @@ const login = async (data: {username: string, password: string}) => {
   })
   if (response.ok) {
     // 感觉这里不用return应该也可以吧？！
-    return handleUserResponse(await response.json())
+    return handleUserResponse(await response.json());   // 注意这里解析的是response.json()
+  } else {
+    return Promise.reject(data);    // 这里的效果类似 throw new Error
   }
 }
 
 /* 用户注册的函数 */
-const register = async (data: {username: string, password: string}) => {
+export const register = async (data: {username: string, password: string}) => {
   const response = await fetch(`${apiUrl}/register`, {
     method: 'POST',
     headers: {
@@ -41,8 +44,10 @@ const register = async (data: {username: string, password: string}) => {
   if (response.ok) {
     // 感觉这里不用return应该也可以吧？！
     return handleUserResponse(await response.json())
+  } else {
+    return Promise.reject(data);    // 这里的效果类似 throw new Error
   }
 }
 
 /* 用户注销的函数 */
-const logout = () => window.localStorage.removeItem(localStorageKey)
+export const logout = () => window.localStorage.removeItem(localStorageKey)
