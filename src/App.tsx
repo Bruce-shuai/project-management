@@ -1,15 +1,22 @@
-import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { ProjectList } from "./screens/project-list";
-import { TsReactTest } from "try-use-array";
-import { LoginScreen } from "./screens/login";
+import { AuthenticatedApp } from "./authenticated-app";
+import { UnauthenticatedApp } from "./unauthenticated-app";
+import { useAuth } from "./context/auth-context";
 function App() {
+  const { user, logout } = useAuth();
+
   return (
     <div className="App">
-      {/* <ProjectList /> */}
-      {/* <TsReactTest /> */}
-      <LoginScreen />
+      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      {user ? (
+        <button
+          onClick={() => {
+            logout();
+          }}
+        >
+          退出登录
+        </button>
+      ) : null}
     </div>
   );
 }

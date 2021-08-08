@@ -4,9 +4,7 @@ import React, { useState, useEffect } from "react";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const LoginScreen = () => {
-  // 这样就非常简洁了
   const { login, user } = useAuth();
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 阻止表单提交的默认行为(跳转到新页面)
     console.log("e.currentTarget", e.currentTarget);
@@ -19,18 +17,9 @@ export const LoginScreen = () => {
     login({ username, password });
   };
 
-  // 这里的基础格式非常重要
-  // 通过 e => ... 方法来获取e的ts类型定义
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-      {user ? (
-        <div>
-          登录成功，用户名: {user?.name}{" "}
-          {/* 因为user 类型是User | null 所以这里是?.*/}
-        </div>
-      ) : (
-        <div>登录失败</div>
-      )}
+      {user ? <div>登录成功，用户名: {user?.name} </div> : <div>登录失败</div>}
       <div>
         <label htmlFor="username">用户名：</label>
         <input type="text" id="username" />

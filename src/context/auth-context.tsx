@@ -26,7 +26,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(data);
   };
   const register = async (form: AuthForm) => {
-    const data = await auth.login(form);
+    const data = await auth.register(form);
+    // console.log('data', data);
     setUser(data);
   };
   const logout = () => {
@@ -43,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-/* 自定义一个hook(useAuth 似乎让代码更加简洁，可复用性更强了点) */
+/* 自定义一个hook(useAuth 让调用这个钩子的组件可以直接使用context value的内容) */
 export const useAuth = () => {
   const context = useContext(AuthContext); // 通过useContext 钩子直接获取 AuthContext 的 value值
   if (!context) {

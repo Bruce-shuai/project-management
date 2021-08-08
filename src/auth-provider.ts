@@ -24,6 +24,7 @@ export const login = async (data: {username: string, password: string}) => {
     },
     body: JSON.stringify(data)
   })
+  
   if (response.ok) {
     // 感觉这里不用return应该也可以吧？！
     return handleUserResponse(await response.json());   // 注意这里解析的是response.json()
@@ -34,6 +35,7 @@ export const login = async (data: {username: string, password: string}) => {
 
 /* 用户注册的函数 */
 export const register = async (data: {username: string, password: string}) => {
+  console.log('进入注册函数');
   const response = await fetch(`${apiUrl}/register`, {
     method: 'POST',
     headers: {
@@ -41,6 +43,7 @@ export const register = async (data: {username: string, password: string}) => {
     },
     body: JSON.stringify(data)
   })
+  
   if (response.ok) {
     // 感觉这里不用return应该也可以吧？！
     return handleUserResponse(await response.json())
