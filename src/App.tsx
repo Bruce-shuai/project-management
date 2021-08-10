@@ -8,15 +8,6 @@ function App() {
   return (
     <div className="App">
       {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
-      {user ? (
-        <button
-          onClick={() => {
-            logout();
-          }}
-        >
-          退出登录
-        </button>
-      ) : null}
     </div>
   );
 }
