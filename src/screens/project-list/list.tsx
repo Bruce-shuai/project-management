@@ -1,4 +1,5 @@
 import { User } from "./search-panel";
+import { Table } from "antd";
 interface Project {
   id: string;
   name: string;
@@ -15,7 +16,28 @@ interface ListProps {
 // 该组件只起到一个展示ui的作用
 export const List = ({ list, users }: ListProps) => {
   return (
-    <table>
+    <Table
+      pagination={false}
+      columns={[
+        {
+          title: "名称",
+          dataIndex: "name",
+          sorter: (a, b) => a.name.localeCompare(b.name),
+        },
+        {
+          title: "负责人",
+          render(value, item) {
+            return (
+              <span>
+                {users.find((user) => user.id === item.personId)?.name ||
+                  "未知"}
+              </span>
+            );
+          },
+        },
+      ]}
+      dataSource={list}
+    >
       {/* 语义化标签，很好！！ 但是优势是什么呢？ */}
       <thead>
         <tr>
@@ -36,6 +58,6 @@ export const List = ({ list, users }: ListProps) => {
           );
         })}
       </tbody>
-    </table>
+    </Table>
   );
 };

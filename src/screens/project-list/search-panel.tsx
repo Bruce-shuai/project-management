@@ -1,3 +1,5 @@
+import { Form, Input, Select } from "antd";
+
 export interface User {
   id: string;
   name: string;
@@ -20,7 +22,7 @@ interface SearchPanelProps {
 export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
   return (
     <form>
-      <input
+      <Input
         type="text"
         value={param.name} // 这里的value 会显示在input里
         onChange={(e) => {
@@ -29,25 +31,25 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
             name: e.target.value,
           });
         }}
-      ></input>
+      ></Input>
       {/* 注意：select 的value值 必须对应option的value值 */}
-      <select
+      <Select
         value={param.personId}
-        onChange={(e) => {
+        onChange={(value) => {
           setParam({
             ...param,
-            personId: e.target.value, // 注意，这里是e.target.value 而不是 e.currentTarget.value
+            personId: value, // 注意，这里是e.target.value 而不是 e.currentTarget.value
           });
         }}
       >
-        <option value="">负责人</option>
+        <Select.Option value="">负责人</Select.Option>
         {users.map((user) => (
           // option 的value表示的是什么？
-          <option key={user.id} value={user.id}>
+          <Select.Option key={user.id} value={user.id}>
             {user.name}
-          </option>
+          </Select.Option>
         ))}
-      </select>
+      </Select>
     </form>
   );
 };
