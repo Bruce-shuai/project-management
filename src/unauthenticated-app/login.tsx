@@ -1,7 +1,5 @@
+import React from "react";
 import { useAuth } from "context/auth-context";
-import React, { useState, useEffect } from "react";
-
-const apiUrl = process.env.REACT_APP_API_URL;
 
 export const LoginScreen = () => {
   const { login, user } = useAuth();
@@ -18,6 +16,7 @@ export const LoginScreen = () => {
   };
 
   return (
+    // form格式里的 onSubmit 事件是在form标签上使用，而非button标签
     <form onSubmit={(e) => handleSubmit(e)}>
       {user ? <div>登录成功，用户名: {user?.name} </div> : <div>登录失败</div>}
       <div>

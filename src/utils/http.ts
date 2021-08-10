@@ -4,6 +4,7 @@
 // ...customConfig 具备覆盖上面数据的能力
 import * as qs from 'qs';
 import * as auth from '../auth-provider';
+import { useAuth } from 'context/auth-context';
 const apiUrl = process.env.REACT_APP_API;
 
 // RequestInit 是从fetch的ts类型提示里获取的
@@ -12,7 +13,8 @@ interface Config extends RequestInit {
   token?: string
 }
 
-export const http = async (endpoint: string, {data, token, headers, ...customConfig}:Config) => {
+// 给参数加了默认值 {data, token, headers, ...customConfig}:Config = {} 参数就变成可选的了
+export const http = async (endpoint: string, {data, token, headers, ...customConfig}: Config = {}) => {
   const config = {
     method: 'GET',
     headers: {
@@ -43,3 +45,12 @@ export const http = async (endpoint: string, {data, token, headers, ...customCon
     return Promise.reject(data);
   }
 } 
+
+// 又再次自定义一个hook
+export const useHttp = () => {
+  const { user } = useAuth();
+  // [string, Config] 类型是什么个用法？ 似乎就是tuple类型，等下研究研究
+  // 为什么恒等于 Parameters<typeof http> ？
+  // ts 操作符的概念  
+  return (...[endpoint, config]:[string, Config]) => http(endpoint, {...config, token: user?.token})
+}

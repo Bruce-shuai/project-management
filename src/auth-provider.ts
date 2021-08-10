@@ -11,7 +11,7 @@ export const getToken = () => {
 /* 服务器响应的数据(token)放在localStorage里 */
 // 这里的es6 解构user 的ts类型定义 比较有特点，记一记
 export const handleUserResponse = ({user}: {user: User}) => {
-  window.localStorage.setItem(localStorageKey, user.token || '')
+  window.localStorage.setItem(localStorageKey, user.token || '')    // || 在这里用得挺妙的
   return user;
 }
 
@@ -20,9 +20,9 @@ export const login = async (data: {username: string, password: string}) => {
   const response = await fetch(`${apiUrl}/login`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json'    // post 请求需要在这儿写一行内容
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data)              // json.stringify 在POST请求这儿是基本的使用格式了
   })
   
   if (response.ok) {

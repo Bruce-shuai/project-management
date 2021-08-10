@@ -1,9 +1,7 @@
-import React from "react";
-
 export interface User {
   id: string;
   name: string;
-  email: string; // 这下面的属性是自创的？！
+  email: string; // 这下面的属性是自创的？！  可以自创，属性比使用时候多了没事，如果使用时没定义这个属性就有问题
   title: string;
   organization: string;
   token: string;
@@ -18,27 +16,27 @@ interface SearchPanelProps {
   setParam: (param: SearchPanelProps["param"]) => void; // 这里真的就非常讲究了
 }
 
+// 说实话，能把setParam 进行组件之间的传递，是非常牛逼的功能
 export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
   return (
     <form>
       <input
         type="text"
-        value={param.name}
+        value={param.name} // 这里的value 会显示在input里
         onChange={(e) => {
           setParam({
             ...param,
             name: e.target.value,
           });
-          console.log("e", e.target.value);
         }}
       ></input>
-      {/* 注意：select 的value值 必须是序号 */}
+      {/* 注意：select 的value值 必须对应option的value值 */}
       <select
         value={param.personId}
         onChange={(e) => {
           setParam({
             ...param,
-            personId: e.target.value,
+            personId: e.target.value, // 注意，这里是e.target.value 而不是 e.currentTarget.value
           });
         }}
       >

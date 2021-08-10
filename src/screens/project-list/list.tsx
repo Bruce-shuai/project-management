@@ -1,4 +1,3 @@
-import React from "react";
 import { User } from "./search-panel";
 interface Project {
   id: string;
@@ -13,8 +12,8 @@ interface ListProps {
   users: User[];
 }
 
+// 该组件只起到一个展示ui的作用
 export const List = ({ list, users }: ListProps) => {
-  // 注意这里是table 标签,怎么用要知道
   return (
     <table>
       {/* 语义化标签，很好！！ 但是优势是什么呢？ */}
