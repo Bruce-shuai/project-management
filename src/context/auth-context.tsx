@@ -1,5 +1,7 @@
 // 创建一个 关于 用户登录 的全局管理
 import React, { useState, useContext, ReactNode } from "react";
+import { useMount } from "utils";
+import { http } from "utils/http";
 import * as auth from "../auth-provider";
 import { User } from "../screens/project-list/search-panel";
 
@@ -18,6 +20,19 @@ interface AuthForm {
   password: string;
 }
 
+// 这个函数的作用是在localstorage里面找token
+const bootstrapUser = async () => {
+  let user = null;
+  const token = auth.getToken();
+  console.log("token", token);
+
+  if (token) {
+    const data = await http("me", { token }); // me 是后端提供的
+    user = data.user;
+  }
+  return user;
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
@@ -35,6 +50,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
+  useMount(() => {
+    // 把找到的user 赋值给user
+    bootstrapUser().then(setUser);
+  });
   // 提供context的生产者   value 是一个对象 value的类型跟createContext 传入的参数类型有关，所以给createContext 这里指定一个泛型
   return (
     <AuthContext.Provider

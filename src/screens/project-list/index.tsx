@@ -12,14 +12,18 @@ export const ProjectList = () => {
   const [users, setUsers] = useState([]);
   const [list, setList] = useState([]);
 
-  const client = useHttp();
+  const client = useHttp(); // 没参数，只是为了返回一个函数
 
   const debounceParam = useDebounce(param, 500);
+
   /* 通过参数获取List组件数据 */
   useEffect(() => {
     client("projects", {
       data: cleanObject(debounceParam),
-    }).then(setList);
+    }).then((list) => {
+      console.log("list", list);
+      setList(list);
+    });
   }, [debounceParam]);
 
   /* 获取SearchPanel的数据, 自定义 useMount 省去奇怪的空数组了 */
