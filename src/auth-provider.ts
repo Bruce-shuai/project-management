@@ -54,3 +54,5 @@ export const register = async (data: {username: string, password: string}) => {
 
 /* 用户注销的函数 */
 export const logout = () => window.localStorage.removeItem(localStorageKey)
+
+
