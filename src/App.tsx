@@ -3,7 +3,7 @@ import { AuthenticatedApp } from "./authenticated-app";
 import { UnauthenticatedApp } from "./unauthenticated-app";
 import { useAuth } from "./context/auth-context";
 function App() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="App">

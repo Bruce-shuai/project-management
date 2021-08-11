@@ -19,13 +19,14 @@ export const UnauthenticatedApp = () => {
           {/* Card 组件感觉还挺有意思的 */}
           {isRegister ? <RegisterScreen /> : <LoginScreen />}
           <Divider />
-          <a // 这里变成a标签，着实挺好看的
+          <Button
+            type="link" // 这里变成a标签，着实挺好看的
             onClick={() => {
               setIsRegister(!isRegister);
             }}
           >
             {isRegister ? "已经有账号啦？直接登录" : "没有账号？注册新账号"}
-          </a>
+          </Button>
         </ShadowCard>
       </Container>
     </Background>

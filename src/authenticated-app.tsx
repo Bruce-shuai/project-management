@@ -2,7 +2,7 @@ import styled from "@emotion/styled/";
 import { ProjectList } from "./screens/project-list";
 import { Row } from "components/lib";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Button } from "antd";
 import { useAuth } from "context/auth-context";
 
 export const AuthenticatedApp = () => {
@@ -20,13 +20,17 @@ export const AuthenticatedApp = () => {
             overlay={
               <Menu>
                 <Menu.Item key="logout">
-                  <a onClick={logout}>退出登录</a>
+                  <Button type="link" onClick={logout}>
+                    退出登录
+                  </Button>
                 </Menu.Item>
               </Menu>
             }
           >
             {/* 这里是为了防止页面重新刷新？？牛逼 */}
-            <a onClick={(e) => e.preventDefault()}>Hi, {user?.name}</a>
+            <Button type="link" onClick={(e) => e.preventDefault()}>
+              Hi, {user?.name}
+            </Button>
           </Dropdown>
         </HeaderRight>
       </Header>

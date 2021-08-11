@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 
-const isFalse = (value: any) => {
+export const isFalse = (value: unknown) => {
   return value === 0 ? false : !value;
 };
+
+// 此函数用于排除对象的键值对出现false 值，却报错
+export const isVoid = (value: unknown) =>
+  value === undefined || value === null || value === "";
 // 这里直接对对象定义为object类型
-export const cleanObject = (object: object) => {
+export const cleanObject = (object: { [key: string]: unknown }) => {
   const newObject = { ...object };
   Object.keys(newObject).forEach((key) => {
     // console.log('---');
     // @ts-ignore   ts-ignore 用法也感觉挺神奇的
-    if (isFalse(newObject[key])) {
+    if (isVoid(newObject[key])) {
       // @ts-ignore
       delete newObject[key];
     }
