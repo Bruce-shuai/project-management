@@ -55,7 +55,7 @@ export const useHttp = () => {
   // 为什么恒等于 Parameters<typeof http> ？
   // ts rest 操作符的概念
   
-  return (...[endpoint, config]:[string, Config]) => {
+  return (...[endpoint, config]:Parameters<typeof http>) => {
     return http(endpoint, {...config, token: user?.token})
   }
 }

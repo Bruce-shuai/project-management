@@ -41,11 +41,16 @@ const Container = styled.div`
 `;
 
 const ShadowCard = styled(Card)`
+  /* 在这里 1rem 等于 10px */
   width: 40rem;
   min-height: 56rem;
   padding: 3.2rem 4rem;
   box-sizing: border-box;
+  /* X轴偏移量、Y轴偏移量、模糊半径、扩散半径和颜色 */
   box-shadow: rgba(0, 0, 0, 0.1) 0 0 10px;
+  /* text-align CSS属性定义行内内容（例如文字）
+  如何相对它的块父元素对齐。text-align 并不控制块元素自己的对齐，
+  只控制它的行内内容的对齐。 */
   text-align: center;
 `;
 
