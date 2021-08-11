@@ -1,3 +1,4 @@
+import { TableProps } from "antd/es/table"; // 注意这里的引用
 import { User } from "./search-panel";
 import { Table } from "antd";
 import dayjs from "dayjs";
@@ -10,15 +11,17 @@ interface Project {
   created: number;
 }
 
-interface ListProps {
-  list: Project[];
+// 这里的extends 用得的确挺巧妙的  TableProps 表示Table标签里所有属性的集合的类型
+interface ListProps extends TableProps<Project> {
   users: User[];
 }
 
 // 该组件只起到一个展示ui的作用
-export const List = ({ list, users }: ListProps) => {
+export const List = ({ users, ...props }: ListProps) => {
   return (
     <Table
+      loading
+      rowKey="id"
       pagination={false}
       columns={[
         {
@@ -54,28 +57,7 @@ export const List = ({ list, users }: ListProps) => {
           },
         },
       ]}
-      dataSource={list}
-    >
-      {/* 语义化标签，很好！！ 但是优势是什么呢？ */}
-      <thead>
-        <tr>
-          <th>名称</th>
-          <th>负责人</th>
-        </tr>
-      </thead>
-      <tbody>
-        {list.map((item) => {
-          return (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>
-                {users.find((user) => user.id === item.personId)?.name ||
-                  "未知"}
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </Table>
+      {...props}
+    />
   );
 };
