@@ -1,8 +1,9 @@
 // 创建一个 关于 用户登录 的全局管理
-import React, { useState, useContext, ReactNode } from "react";
+// ReactNode的使用挺有意思的
+import React, { useState, useContext, ReactNode, useEffect } from "react";
 import { useMount } from "utils";
 import { http } from "utils/http";
-import * as auth from "../auth-provider";
+import * as auth from "../auth-provider"; // 这里的别名用得恰到好处
 import { User } from "../screens/project-list/search-panel";
 
 interface ContextType {
@@ -12,6 +13,7 @@ interface ContextType {
   logout: () => void;
 }
 
+// 创建一个context对象 AuthContext
 const AuthContext = React.createContext<ContextType | undefined>(undefined);
 AuthContext.displayName = "AuthContext"; // 用于devtools
 
@@ -24,10 +26,10 @@ interface AuthForm {
 const bootstrapUser = async () => {
   let user = null;
   const token = auth.getToken();
-  console.log("token", token);
 
   if (token) {
     const data = await http("me", { token }); // me 是后端提供的
+    // console.log('datata', data);  // data 里有id name  taken
     user = data.user;
   }
   return user;
@@ -35,7 +37,6 @@ const bootstrapUser = async () => {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-
   const login = async (form: AuthForm) => {
     const data = await auth.login(form); // 这里用await的原因是因为auth.login 返回的就是一个Promise对象，根据ts的提升可以知道
     setUser(data);
@@ -44,6 +45,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const data = await auth.register(form);
     // console.log('data', data);
     setUser(data);
+    // 发现一个问题当使用usestate对数据进行更新，并不能立刻获取到最新的数据。
+    // console.log('user', user);  // user undefined
+    // 解决方法： https://segmentfault.com/a/1190000040013137    总共两种方法： 1. 使用useEffect  2. 创建一个新的变量保存最新的数据(感觉意义不大)
   };
   const logout = () => {
     auth.logout();
@@ -51,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useMount(() => {
-    // 把找到的user 赋值给user
+    // 把找到的user 赋值给user  then里面使用setUser是使用了point free的方法
     bootstrapUser().then(setUser);
   });
   // 提供context的生产者   value 是一个对象 value的类型跟createContext 传入的参数类型有关，所以给createContext 这里指定一个泛型

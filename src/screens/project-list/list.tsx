@@ -2,7 +2,7 @@ import { TableProps } from "antd/es/table"; // 注意这里的引用
 import { User } from "./search-panel";
 import { Table } from "antd";
 import dayjs from "dayjs";
-interface Project {
+export interface Project {
   id: string;
   name: string;
   personId: string; // 不该是number类型吗？

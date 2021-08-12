@@ -3,7 +3,7 @@ import { User } from './screens/project-list/search-panel'
 const apiUrl = process.env.REACT_APP_API_URL;
 const localStorageKey = '__auth_provider_token__';
 
-/* 获取token */
+/* 从localStorage里获取token */
 export const getToken = () => {
   return window.localStorage.getItem(localStorageKey);
 }
@@ -11,8 +11,10 @@ export const getToken = () => {
 /* 服务器响应的数据(token)放在localStorage里 */
 // 这里的es6 解构user 的ts类型定义 比较有特点，记一记
 export const handleUserResponse = ({user}: {user: User}) => {
-  window.localStorage.setItem(localStorageKey, user.token || '')    // || 在这里用得挺妙的
-  return user;
+  window.localStorage.setItem(localStorageKey, user.token || '')    // || 在这里用得挺妙的， 而且键值好像必须是字符串
+  // console.log('user', user);   user 就三个信息： 1. id   2. name  3. token
+  
+  return user;   
 }
 
 /* 用户登录的函数 */

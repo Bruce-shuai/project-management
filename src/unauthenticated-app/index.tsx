@@ -7,6 +7,7 @@ import logo from "assets/logo.svg";
 import left from "assets/left.svg";
 import right from "assets/right.svg";
 
+/* 未登录账户的页面 */
 export const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(true);
 
@@ -16,11 +17,11 @@ export const UnauthenticatedApp = () => {
         <Header />
         <ShadowCard>
           <Title>{isRegister ? "请注册" : "请登录"}</Title>
-          {/* Card 组件感觉还挺有意思的 */}
           {isRegister ? <RegisterScreen /> : <LoginScreen />}
           <Divider />
+          {/* 有超链接样式效果的button */}
           <Button
-            type="link" // 这里变成a标签，着实挺好看的
+            type="link"
             onClick={() => {
               setIsRegister(!isRegister);
             }}
@@ -33,7 +34,8 @@ export const UnauthenticatedApp = () => {
   );
 };
 
-// 把其当作普通的react 组件来使用
+// ---------------------------CSS-in-JS---------------------------
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,7 +44,6 @@ const Container = styled.div`
 `;
 
 const ShadowCard = styled(Card)`
-  /* 在这里 1rem 等于 10px */
   width: 40rem;
   min-height: 56rem;
   padding: 3.2rem 4rem;
@@ -62,7 +63,7 @@ const Header = styled.header`
   width: 100%;
 `;
 
-// 我艹，这个样式好难
+// 这个样式挺有意思的
 const Background = styled.div`
   position: absolute;
   width: 100%;
@@ -72,6 +73,7 @@ const Background = styled.div`
   background-position: left bottom, right bottom;
   background-size: calc(((100vw - 40rem) / 2) - 3.2rem),
     calc(((100vw - 40rem) / 2) - 3.2rem), cover;
+  /* 这里对于url的使用挺有意思的 */
   background-image: url(${left}), url(${right});
 `;
 
