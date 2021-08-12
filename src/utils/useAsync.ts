@@ -57,6 +57,9 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?:typeof defau
       setData(data);
       return data;
     }).catch(error => {
+
+      console.log('....', error);
+      
       // 这里的内容非常有意思！！！
       // catch 会消化异常(??)，如果不主动抛出，外面是接受不到异常的
       setError(error); 
