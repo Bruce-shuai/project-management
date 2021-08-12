@@ -31,7 +31,7 @@ export const login = async (data: {username: string, password: string}) => {
     // 感觉这里不用return应该也可以吧？！
     return handleUserResponse(await response.json());   // 注意这里解析的是response.json()
   } else {
-    return Promise.reject(data);    // 这里的效果类似 throw new Error
+    return Promise.reject(await response.json());    // 这里的效果类似 throw new Error
   }
 }
 
@@ -50,7 +50,7 @@ export const register = async (data: {username: string, password: string}) => {
     // 感觉这里不用return应该也可以吧？！
     return handleUserResponse(await response.json())
   } else {
-    return Promise.reject(data);    // 这里的效果类似 throw new Error
+    return Promise.reject(await response.json());    // 这里的效果类似 throw new Error
   }
 }
 

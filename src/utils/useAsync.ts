@@ -14,9 +14,13 @@ const defaultInitialState: State<null> = {
   status: 'idle',
 }
 
+const defaultConfig = {
+  throwOnError: false
+}
+
 // 该自定义钩子用于统一处理Loading 和 Error状态
-export const useAsync = <D>(initialState?: State<D>) => {
-  
+export const useAsync = <D>(initialState?: State<D>, initialConfig?:typeof defaultConfig) => {
+  const config = {...defaultConfig, initialConfig}
   // 为什么不直接在参数这里写默认值呢
   // 这里其实就解释了<>里面又有<>的原因
   const [state, setState] = useState<State<D>>({
@@ -53,8 +57,13 @@ export const useAsync = <D>(initialState?: State<D>) => {
       setData(data);
       return data;
     }).catch(error => {
-      setError(error);
-      return error;
+      // 这里的内容非常有意思！！！
+      // catch 会消化异常(??)，如果不主动抛出，外面是接受不到异常的
+      setError(error); 
+      // return error;    // 这里的消化异常指的是 即使在catch里，只要代码没报错，会被下一个then接收而非catch接收(双越)
+      // 主动抛出异常的方法
+      if (config.throwOnError) return Promise.reject(error);
+      return Promise.reject(error);
     })
   }
 

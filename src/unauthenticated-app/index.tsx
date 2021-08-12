@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { LoginScreen } from "./login";
 import { RegisterScreen } from "./register";
-import { Card, Divider, Button } from "antd";
+import { Card, Divider, Button, Typography } from "antd";
 import styled from "@emotion/styled";
 import logo from "assets/logo.svg";
 import left from "assets/left.svg";
@@ -10,14 +10,21 @@ import right from "assets/right.svg";
 /* 未登录账户的页面 */
 export const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(true);
-
+  const [error, setError] = useState<Error | null>(null);
   return (
     <Background>
       <Container>
         <Header />
         <ShadowCard>
           <Title>{isRegister ? "请注册" : "请登录"}</Title>
-          {isRegister ? <RegisterScreen /> : <LoginScreen />}
+          {error ? (
+            <Typography.Text type="danger">{error.message}</Typography.Text>
+          ) : null}
+          {isRegister ? (
+            <RegisterScreen onError={setError} />
+          ) : (
+            <LoginScreen onError={setError} />
+          )}
           <Divider />
           {/* 有超链接样式效果的button */}
           <Button
