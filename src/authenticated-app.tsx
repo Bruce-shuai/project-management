@@ -4,9 +4,10 @@ import { Row } from "components/lib";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { Dropdown, Menu, Button } from "antd";
 import { useAuth } from "context/auth-context";
-import { Route, Routes } from "react-router";
+import { Route, Routes, Navigate } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
+import { resetRoute } from "utils";
 
 export const AuthenticatedApp = () => {
   return (
@@ -19,6 +20,8 @@ export const AuthenticatedApp = () => {
             <Route path="/projects" element={<ProjectList />} />
             {/* 接参数 *这个符号在这里有什么意思呢？ /* 的意思是匹配 /project/:id 后面必须带点东西，比如/project/18/kanban  */}
             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
+            {/* 默认路由 */}
+            <Navigate to={"/projects"} />
           </Routes>
         </Router>
       </Main>
@@ -31,7 +34,9 @@ const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <SoftwareLogo width="18rem" color="rgb(38, 132, 255)" />
+        <Button type="link" onClick={resetRoute}>
+          <SoftwareLogo width="18rem" color="rgb(38, 132, 255)" />
+        </Button>
         <HeaderItem>项目</HeaderItem>
         <HeaderItem>用户</HeaderItem>
       </HeaderLeft>

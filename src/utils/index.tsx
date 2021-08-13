@@ -87,3 +87,6 @@ export const useDocumentTitle = (
     };
   }, [keepOnUnmount, oldTitle]);
 };
+
+// 这招重置路由 感觉有点牛逼(不仅可以重置路由，还可以刷新页面)
+export const resetRoute = () => (window.location.href = window.location.origin);
