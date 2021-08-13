@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export const isFalse = (value: unknown) => {
   return value === 0 ? false : !value;
@@ -66,4 +66,24 @@ export const useArray = <T extends unknown>(param: T[]) => {
     }, // 清空数组内容
     value: array,
   };
+};
+
+export const useDocumentTitle = (
+  title: string,
+  keepOnUnmount: boolean = true
+) => {
+  // useRef  返回的ref对象在组件的整个生命周期内保持不变
+  const oldTitle = useRef(document.title).current;
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  useEffect(() => {
+    return () => {
+      if (!keepOnUnmount) {
+        document.title = oldTitle;
+      }
+    };
+  }, [keepOnUnmount, oldTitle]);
 };
