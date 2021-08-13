@@ -4,7 +4,6 @@ import { useMount } from "utils";
 // react hook 与 闭包， hook与闭包经典的坑(挺有意思的)
 export const Test = () => {
   const [num, setNum] = useState(0);
-
   const add = () => setNum(num + 1);
 
   // useMount(() => {
