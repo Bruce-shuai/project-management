@@ -10,11 +10,7 @@ import { Test } from "./text";
 import { useUrlQueryParam } from "utils/url";
 
 export const ProjectList = () => {
-  const [, setParam] = useState({
-    name: "",
-    personId: "",
-  });
-  const [param] = useUrlQueryParam(["name", "personId"]);
+  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
   const debounceParam = useDebounce(param, 500);
   // data: list 这是什么用法？  另起一个名字？ ！把data 起名为list
   const { isLoading, error, data: list } = useProjects(debounceParam);
