@@ -11,11 +11,14 @@ export const useProjects = (param?: Partial<Project>) => {
   // 这里的data:list 是个什么意思呢？
   const {run, ...result} = useAsync<Project[]>();
 
+  const fetchProjects = () => run(client('projects', {
+    data: cleanObject(param || {}),
+  }))
   /* 通过参数获取List组件数据 */
   useEffect(() => {
-    run(client('projects', {
-      data: cleanObject(param || {}),
-    }))
+    run(fetchProjects(), {
+      retry: fetchProjects
+    })
   }, [param]);
   return result;
 }

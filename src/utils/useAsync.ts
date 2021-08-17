@@ -28,6 +28,10 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?:typeof defau
     ...initialState
   })
 
+  const [retry, setRetry] = useState(() => () => {
+
+  })
+
   /* 下面的这些写法是真的牛逼 */
   const setData = (data: D) => setState({
     data,
@@ -43,7 +47,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?:typeof defau
 
   // run函数用来触发异步请求
   // 这个run 函数有点意思 疑惑：不是参数就已经限定了传入的必须是promise吗？
-  const run = (promise: Promise<D>) => {
+  const run = (promise: Promise<D>, runConfig?:{retry: () => Promise<D>}) => {
     // 如果传入的不是promise 或 什么也不传的情况
     // !promise 表示什么也没传入
     // !promise.then 表示不是promise
@@ -51,6 +55,12 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?:typeof defau
       // throw Error 会打断一切的进程，所以后面的内容就不会再继续执行
       throw new Error('请传入Promise类型数据');  
     }
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig?.retry(), runConfig)
+      }
+    })
+
     setState({...state, status: 'loading'})
     return promise
     .then(data => {
@@ -70,7 +80,6 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?:typeof defau
     })
   }
 
-
   return {
     isIdle: state.status === 'idle',
     isLoading: state.status === 'loading',
@@ -79,6 +88,10 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?:typeof defau
     run,
     setData,
     setError,
+    // retry被调用时重新跑一边run，让state刷新一遍
+    retry,
     ...state      // 这里的state 是解构语法，即完整的把state里的内容返回
   }
 }
+
+

@@ -17,13 +17,15 @@ export interface Project {
 // 这里的extends 用得的确挺巧妙的  TableProps 表示Table标签里所有属性的集合的类型
 interface ListProps extends TableProps<Project> {
   users: User[];
+  refresh?: () => void;
 }
 
 // 该组件只起到一个展示ui的作用
 export const List = ({ users, ...props }: ListProps) => {
   // 向服务端发送一个项目编辑请求  PATCH 请求
   const { mutate } = useEditProject();
-
+  const pinProject = (id: number) => (pin: boolean) =>
+    mutate({ id, pin }).then(props.refresh);
   return (
     <Table
       loading
@@ -36,7 +38,7 @@ export const List = ({ users, ...props }: ListProps) => {
             return (
               <Pin
                 checked={project.pin}
-                onCheckedChange={(pin) => mutate({ id: project.id, pin })}
+                onCheckedChange={pinProject(project.id)}
               />
             );
           },

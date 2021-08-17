@@ -13,7 +13,12 @@ export const ProjectList = () => {
   useDocumentTitle("项目列表", true);
 
   const [param, setParam] = useProjectsSearchParams();
-  const { isLoading, error, data: list } = useProjects(useDebounce(param, 500));
+  const {
+    isLoading,
+    error,
+    data: list,
+    retry,
+  } = useProjects(useDebounce(param, 500));
   const { data: users } = useUsers();
   return (
     <Container>
@@ -23,7 +28,12 @@ export const ProjectList = () => {
       {error ? (
         <Typography.Text type="danger">请求失败{error.message}</Typography.Text>
       ) : null}
-      <List loading={isLoading} users={users || []} dataSource={list || []} />
+      <List
+        refresh={retry}
+        loading={isLoading}
+        users={users || []}
+        dataSource={list || []}
+      />
     </Container>
   );
 };
