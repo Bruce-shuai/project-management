@@ -4,9 +4,9 @@ import { Table } from "antd";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 export interface Project {
-  id: string;
+  id: number;
   name: string;
-  personId: string; // 不该是number类型吗？
+  personId: number; // 不该是number类型吗？
   pin: boolean; // 这个类型是怎么来的？
   organization: string;
   created: number;
