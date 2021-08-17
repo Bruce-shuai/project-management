@@ -3,6 +3,8 @@ import { User } from "./search-panel";
 import { Table } from "antd";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { Pin } from "components/pin";
+import { useEditProject } from "utils/project";
 export interface Project {
   id: number;
   name: string;
@@ -19,12 +21,26 @@ interface ListProps extends TableProps<Project> {
 
 // 该组件只起到一个展示ui的作用
 export const List = ({ users, ...props }: ListProps) => {
+  // 向服务端发送一个项目编辑请求  PATCH 请求
+  const { mutate } = useEditProject();
+
   return (
     <Table
       loading
       rowKey="id"
       pagination={false}
       columns={[
+        {
+          title: <Pin checked={true} disabled={true} />,
+          render(value, project) {
+            return (
+              <Pin
+                checked={project.pin}
+                onCheckedChange={(pin) => mutate({ id: project.id, pin })}
+              />
+            );
+          },
+        },
         {
           title: "名称",
           sorter: (a, b) => a.name.localeCompare(b.name),

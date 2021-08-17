@@ -19,3 +19,33 @@ export const useProjects = (param?: Partial<Project>) => {
   }, [param]);
   return result;
 }
+
+export const useEditProject = () => {
+  const { run, ...asyncResult } = useAsync();
+  const client = useHttp();
+  const mutate = (params: Partial<Project>) => {
+    return run(client(`projects/${params.id}`, {
+      data: params,
+      method: 'PATCH'
+    }))
+  }
+  return {
+    mutate,
+    ...asyncResult
+  }
+}
+
+export const useAddProject = () => {
+  const { run, ...asyncResult } = useAsync();
+  const client = useHttp();
+  const mutate = (params: Partial<Project>) => {
+    return run(client(`projects/${params.id}`, {
+      data: params,
+      method: 'POST'    // 尽管路径一样，但方法不同，所以请求的内容也是不同的
+    }))
+  }
+  return {
+    mutate,
+    ...asyncResult
+  }
+}
