@@ -8,8 +8,9 @@ export const Row = styled.div<{
 }>`
   display: flex;
   align-items: center;
+  /* emotion能够使用函数是真的牛逼 */
   justify-content: ${(props) => (props.between ? "space-between" : undefined)};
-  margin-bottom: ${(prosp) => prosp.marginBottom + "rem"};
+  margin-bottom: ${(props) => props.marginBottom + "rem"};
   & > * {
     // 直接子元素  这个用法感觉有点秀
     margin-top: 0 !important;
@@ -24,6 +25,7 @@ export const Row = styled.div<{
   }
 `;
 
+// 页面居中的布局
 const FullPage = styled.div`
   height: 100vh;
   display: flex;

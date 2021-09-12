@@ -54,7 +54,9 @@ export const useHttp = () => {
   // [string, Config] 类型是什么个用法？ 似乎就是tuple类型，等下研究研究
   // 为什么恒等于 Parameters<typeof http> ？
   // ts rest 操作符的概念
-  
+  // type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;  
+  // infer 效果到底是啥
+  // infer X 就相当于声明了一个变量，这个变量随后可以使用
   return (...[endpoint, config]:Parameters<typeof http>) => {
     return http(endpoint, {...config, token: user?.token})
   }

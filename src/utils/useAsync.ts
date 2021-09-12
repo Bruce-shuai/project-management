@@ -19,6 +19,7 @@ const defaultConfig = {
 }
 
 // 该自定义钩子用于统一处理Loading 和 Error状态
+// 这个钩子 就是 异步钩子的意思(发送异步请求 就需要这个钩子)
 export const useAsync = <D>(initialState?: State<D>, initialConfig?:typeof defaultConfig) => {
   const config = {...defaultConfig, initialConfig}
   // 为什么不直接在参数这里写默认值呢

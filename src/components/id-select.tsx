@@ -6,6 +6,7 @@ type SelectProps = React.ComponentProps<typeof Select>;
 
 // 透传方法真的牛逼
 interface IdSelectProps
+  // Omit: Construct a type with the properties of T except for those in type K.
   extends Omit<SelectProps, "value" | "onChange" | "options"> {
   value: Raw | null | undefined;
   onChange: (value?: number) => void;
@@ -20,9 +21,11 @@ interface IdSelectProps
  * @param props
  */
 export const IdSelect = (props: IdSelectProps) => {
+  // 这里的解构 有一说一 用得真好
   const { value, onChange, defaultOptionName, options, ...restProps } = props;
   return (
     <Select
+      // 这里 options?.length 是什么个原理呢？
       value={options?.length ? toNumber(value) : 0}
       onChange={(value) => onChange(toNumber(value) || undefined)}
       {...restProps}

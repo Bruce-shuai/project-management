@@ -1,8 +1,7 @@
 // 创建一个 关于 用户登录 的全局管理
 // ReactNode的使用挺有意思的
 import { FullPageErrorFallback, FullPageLoading } from "components/lib";
-import { DevTools } from "jira-dev-tool";
-import React, { useState, useContext, ReactNode, useEffect } from "react";
+import React, { useContext, ReactNode } from "react";
 import { useMount } from "utils";
 import { http } from "utils/http";
 import { useAsync } from "utils/useAsync";
@@ -25,12 +24,13 @@ interface AuthForm {
   password: string;
 }
 
-// 这个函数的作用是在localstorage里面找token
+// 这个函数的作用是初始化user，避免页面刷新，user初始化的值为0
 const bootstrapUser = async () => {
   let user = null;
   const token = auth.getToken();
 
   if (token) {
+    // http 函数 相当于封装了http请求
     const data = await http("me", { token }); // me 是后端提供的
     // console.log('datata', data);  // data 里有id name  taken
     user = data.user;
@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setData: setUser,
   } = useAsync<User | null>();
 
+  // 相当于又封装了一层login 从而达到 通过登陆，让用户数据放在context对象里实现全局共享
   const login = async (form: AuthForm) => {
     const data = await auth.login(form); // 这里用await的原因是因为auth.login 返回的就是一个Promise对象，根据ts的提升可以知道
     setUser(data);
@@ -95,5 +96,6 @@ export const useAuth = () => {
   if (!context) {
     throw new Error("useAuth必须在AuthProvider中使用");
   }
+  // 这里的context 应该就是可以使用的全局数据了
   return context;
 };

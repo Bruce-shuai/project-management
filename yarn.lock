@@ -10500,20 +10500,17 @@ react-refresh@^0.8.3:
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.8.3.tgz"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
-react-router-dom@^6.0.0-beta.0:
-  version "6.0.0-beta.0"
-  resolved "https://registry.nlark.com/react-router-dom/download/react-router-dom-6.0.0-beta.0.tgz#9dcc8555365f22f7fbd09f26b6b82543f3eb97d6"
-  integrity sha1-ncyFVTZfIvf70J8mtrglQ/Prl9Y=
+react-router-dom@^6.0.0-beta.3:
+  version "6.0.0-beta.3"
+  resolved "https://registry.nlark.com/react-router-dom/download/react-router-dom-6.0.0-beta.3.tgz?cache=0&sync_timestamp=1630706870957&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact-router-dom%2Fdownload%2Freact-router-dom-6.0.0-beta.3.tgz#4f84a5e5717514d0a9aee9f6724d54b61cfd6387"
+  integrity sha1-T4Sl5XF1FNCprun2ck1Uthz9Y4c=
   dependencies:
-    prop-types "^15.7.2"
-    react-router "6.0.0-beta.0"
+    react-router "6.0.0-beta.3"
 
-react-router@6.0.0-beta.0, react-router@^6.0.0-beta.0:
-  version "6.0.0-beta.0"
-  resolved "https://registry.nlark.com/react-router/download/react-router-6.0.0-beta.0.tgz#3e11f39b6ded4412c2fed9e4f989dd4c8156724d"
-  integrity sha1-PhHzm23tRBLC/tnk+YndTIFWck0=
-  dependencies:
-    prop-types "^15.7.2"
+react-router@6.0.0-beta.3, react-router@^6.0.0-beta.3:
+  version "6.0.0-beta.3"
+  resolved "https://registry.nlark.com/react-router/download/react-router-6.0.0-beta.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact-router%2Fdownload%2Freact-router-6.0.0-beta.3.tgz#d1276202eee8a0269c6d24fc9be72d5448cc63ae"
+  integrity sha1-0SdiAu7ooCacbST8m+ctVEjMY64=
 
 react-scripts@4.0.3:
   version "4.0.3"

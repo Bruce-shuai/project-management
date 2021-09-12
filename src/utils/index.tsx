@@ -89,4 +89,20 @@ export const useDocumentTitle = (
 };
 
 // 这招重置路由 感觉有点牛逼(不仅可以重置路由，还可以刷新页面)
+// window.location 的用法可以学习学习
+/*
+  window.location.href returns the href (URL) of the current page
+  window.location.hostname returns the domain name of the web host
+  window.location.pathname returns the path and filename of the current page
+  window.location.protocol returns the web protocol used (http: or https:)
+  window.location.assign() loads a new document
+  window.location.origin   Return the protocol, hostname and port number of a URL.
+*/
+/*
+  两者区别
+  window.location.origin
+  "https://www.w3schools.com"
+  window.location.href
+  "https://www.w3schools.com/jsref/prop_loc_origin.asp"
+*/
 export const resetRoute = () => (window.location.href = window.location.origin);

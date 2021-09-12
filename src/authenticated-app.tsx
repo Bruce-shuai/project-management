@@ -18,7 +18,7 @@ export const AuthenticatedApp = () => {
         <Router>
           <Routes>
             <Route path="/projects" element={<ProjectList />} />
-            {/* 接参数 *这个符号在这里有什么意思呢？ /* 的意思是匹配 /project/:id 后面必须带点东西，比如/project/18/kanban  */}
+            {/* 接参数 *这个符号在这里有什么意思呢？ /* 的意思是匹配 /projects/:projectId 后面必须带点东西，比如/project/18/kanban  */}
             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
             {/* 默认路由 */}
             <Navigate to={"/projects"} />
