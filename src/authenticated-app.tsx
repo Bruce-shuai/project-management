@@ -16,7 +16,13 @@ export const AuthenticatedApp = () => {
 
   return (
     <div>
-      <PageHeader setProjectModalOpen={setProjectModalOpen} />
+      <PageHeader
+        projectButton={
+          <Button type="link" onClick={() => setProjectModalOpen(true)}>
+            创建项目
+          </Button>
+        }
+      />
       <Button
         onClick={() => {
           setProjectModalOpen(true);
@@ -31,7 +37,16 @@ export const AuthenticatedApp = () => {
             <Route
               path="/projects"
               element={
-                <ProjectList setProjectModalOpen={setProjectModalOpen} />
+                <ProjectList
+                  projectButton={
+                    <Button
+                      type="link"
+                      onClick={() => setProjectModalOpen(true)}
+                    >
+                      创建项目
+                    </Button>
+                  }
+                />
               }
             />
             {/* 接参数 *这个符号在这里有什么意思呢？ /* 的意思是匹配 /projects/:projectId 后面必须带点东西，比如/project/18/kanban  */}
@@ -40,7 +55,16 @@ export const AuthenticatedApp = () => {
             <Route
               index
               element={
-                <ProjectList setProjectModalOpen={setProjectModalOpen} />
+                <ProjectList
+                  projectButton={
+                    <Button
+                      type="link"
+                      onClick={() => setProjectModalOpen(true)}
+                    >
+                      创建项目
+                    </Button>
+                  }
+                />
               }
             />
           </Routes>
@@ -57,9 +81,7 @@ export const AuthenticatedApp = () => {
 };
 
 // 首页顶部
-const PageHeader = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const PageHeader = (props: { projectButton: JSX.Element }) => {
   const { logout, user } = useAuth();
 
   return (
@@ -74,7 +96,7 @@ const PageHeader = (props: {
           />
           {/* </div> */}
         </Button>
-        <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} />
+        <ProjectPopover {...props} />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>

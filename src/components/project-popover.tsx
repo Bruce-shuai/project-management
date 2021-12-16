@@ -2,11 +2,7 @@ import React from "react";
 import { Divider, List, Popover, Typography, Button } from "antd";
 import { useProjects } from "utils/project";
 
-interface PopoverProps {
-  setProjectModalOpen: (param: any) => void;
-}
-
-export default function ProjectPopover({ setProjectModalOpen }: PopoverProps) {
+export default function ProjectPopover(props: { projectButton: JSX.Element }) {
   const { data: project, isLoading } = useProjects(); // 获取一些数据
   const pinnedProjects = project?.filter((project) => project.pin);
   console.log("project", project);
@@ -23,9 +19,7 @@ export default function ProjectPopover({ setProjectModalOpen }: PopoverProps) {
         ))}
       </List>
       <Divider />
-      <Button type="link" onClick={() => setProjectModalOpen(true)}>
-        创建项目
-      </Button>
+      {props.projectButton}
     </div>
   );
 

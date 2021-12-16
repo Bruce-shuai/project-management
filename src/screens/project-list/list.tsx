@@ -17,12 +17,12 @@ export interface Project {
 // 这里的extends 用得的确挺巧妙的  TableProps 表示Table标签里所有属性的集合的类型
 interface ListProps extends TableProps<Project> {
   users: User[];
-  setProjectModalOpen: (isOpen: boolean) => void;
   refresh?: () => void;
+  projectButton: JSX.Element;
 }
 
 // 该组件只起到一个展示ui的作用
-export const List = ({ users, setProjectModalOpen, ...props }: ListProps) => {
+export const List = ({ users, ...props }: ListProps) => {
   // 向服务端发送一个项目编辑请求  PATCH 请求
   const { mutate } = useEditProject();
   const pinProject = (id: number) => (pin: boolean) =>
@@ -87,14 +87,7 @@ export const List = ({ users, setProjectModalOpen, ...props }: ListProps) => {
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key="edit">
-                      <Button
-                        type="link"
-                        onClick={() => setProjectModalOpen(true)}
-                      >
-                        编辑
-                      </Button>
-                    </Menu.Item>
+                    <Menu.Item key="edit">{props.projectButton}</Menu.Item>
                   </Menu>
                 }
               >
