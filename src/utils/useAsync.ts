@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useMountedRef } from 'utils';
 
 // 这里的TS 类型定义用得好啊
 interface State<D> {
@@ -28,58 +29,63 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?:typeof defau
     ...defaultInitialState,
     ...initialState
   })
-
+  const mountedRef = useMountedRef();
   const [retry, setRetry] = useState(() => () => {
 
   })
 
   /* 下面的这些写法是真的牛逼 */
-  const setData = (data: D) => setState({
-    data,
-    status: 'success',
-    error: null,
-  })
+  const setData = useCallback(
+    (data: D) => setState({
+      data,
+      status: 'success',
+      error: null,
+    }),[]);
 
-  const setError = (error: Error) => setState({
+  const setError = useCallback((error: Error) => setState({
     data: null,
     status: 'error',
     error
-  })
+  }), []);
 
   // run函数用来触发异步请求
   // 这个run 函数有点意思 疑惑：不是参数就已经限定了传入的必须是promise吗？
-  const run = (promise: Promise<D>, runConfig?:{retry: () => Promise<D>}) => {
-    // 如果传入的不是promise 或 什么也不传的情况
-    // !promise 表示什么也没传入
-    // !promise.then 表示不是promise
-    if (!promise || !promise.then) {
-      // throw Error 会打断一切的进程，所以后面的内容就不会再继续执行
-      throw new Error('请传入Promise类型数据');  
-    }
-    setRetry(() => () => {
-      if (runConfig?.retry) {
-        run(runConfig?.retry(), runConfig)
+  const run = useCallback(
+    (promise: Promise<D>, runConfig?:{retry: () => Promise<D>}) => {
+      // 如果传入的不是promise 或 什么也不传的情况
+      // !promise 表示什么也没传入
+      // !promise.then 表示不是promise
+      if (!promise || !promise.then) {
+        // throw Error 会打断一切的进程，所以后面的内容就不会再继续执行
+        throw new Error('请传入Promise类型数据');  
       }
-    })
-
-    setState({...state, status: 'loading'})
-    return promise
-    .then(data => {
-      setData(data);
-      return data;
-    }).catch(error => {
-
-      console.log('....', error);
-      
-      // 这里的内容非常有意思！！！
-      // catch 会消化异常(??)，如果不主动抛出，外面是接受不到异常的
-      setError(error); 
-      // return error;    // 这里的消化异常指的是 即使在catch里，只要代码没报错，会被下一个then接收而非catch接收(双越)
-      // 主动抛出异常的方法
-      if (config.throwOnError) return Promise.reject(error);
-      return Promise.reject(error);
-    })
-  }
+      setRetry(() => () => {
+        if (runConfig?.retry) {
+          run(runConfig?.retry(), runConfig)
+        }
+      })
+  
+      setState(prevState => ({...prevState, status: 'loading'}));
+      return promise
+      .then(data => {
+        // 这样就可以阻止在已卸载的组件上赋值
+        if (mountedRef.current)
+        setData(data);
+        return data;
+      }).catch(error => {
+  
+        console.log('....', error);
+        
+        // 这里的内容非常有意思！！！
+        // catch 会消化异常(??)，如果不主动抛出，外面是接受不到异常的
+        setError(error); 
+        // return error;    // 这里的消化异常指的是 即使在catch里，只要代码没报错，会被下一个then接收而非catch接收(双越)
+        // 主动抛出异常的方法
+        if (config.throwOnError) return Promise.reject(error);
+        return Promise.reject(error);
+      })
+    }, [config.throwOnError, mountedRef, setData, setError])
+  
 
   return {
     isIdle: state.status === 'idle',

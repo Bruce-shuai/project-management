@@ -1,6 +1,6 @@
 import { TableProps } from "antd/es/table"; // 注意这里的引用
 import { User } from "./search-panel";
-import { Table } from "antd";
+import { Table, Dropdown, Button, Menu } from "antd";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { Pin } from "components/pin";
@@ -17,11 +17,12 @@ export interface Project {
 // 这里的extends 用得的确挺巧妙的  TableProps 表示Table标签里所有属性的集合的类型
 interface ListProps extends TableProps<Project> {
   users: User[];
+  setProjectModalOpen: (isOpen: boolean) => void;
   refresh?: () => void;
 }
 
 // 该组件只起到一个展示ui的作用
-export const List = ({ users, ...props }: ListProps) => {
+export const List = ({ users, setProjectModalOpen, ...props }: ListProps) => {
   // 向服务端发送一个项目编辑请求  PATCH 请求
   const { mutate } = useEditProject();
   const pinProject = (id: number) => (pin: boolean) =>
@@ -47,7 +48,9 @@ export const List = ({ users, ...props }: ListProps) => {
           title: "名称",
           sorter: (a, b) => a.name.localeCompare(b.name),
           render(value, project) {
-            return <Link to={String(project.id)}>{project.name}</Link>;
+            return (
+              <Link to={`projects/${String(project.id)}`}>{project.name}</Link>
+            );
           },
         },
         {
@@ -74,6 +77,29 @@ export const List = ({ users, ...props }: ListProps) => {
                   ? dayjs(project.created).format("YYYY-MM-DD")
                   : "无"}
               </span>
+            );
+          },
+        },
+        {
+          // 感觉table的灵活性还是非常强的
+          render(value, project) {
+            return (
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item key="edit">
+                      <Button
+                        type="link"
+                        onClick={() => setProjectModalOpen(true)}
+                      >
+                        编辑
+                      </Button>
+                    </Menu.Item>
+                  </Menu>
+                }
+              >
+                <Button type="link">...</Button>
+              </Dropdown>
             );
           },
         },

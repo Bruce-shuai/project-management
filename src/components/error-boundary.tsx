@@ -1,3 +1,4 @@
+// 错误边界
 import React, { ReactNode } from "react";
 
 // 错误边界的实现一定要使用类组件

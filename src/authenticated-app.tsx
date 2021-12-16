@@ -4,41 +4,78 @@ import { Row } from "components/lib";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { Dropdown, Menu, Button } from "antd";
 import { useAuth } from "context/auth-context";
-import { Route, Routes, Navigate } from "react-router";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
+import { useState } from "react";
+import ProjectModal from "screens/project-list/project-modal";
+import ProjectPopover from "components/project-popover";
 
 export const AuthenticatedApp = () => {
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
+
   return (
     <div>
-      <PageHeader />
+      <PageHeader setProjectModalOpen={setProjectModalOpen} />
+      <Button
+        onClick={() => {
+          setProjectModalOpen(true);
+        }}
+      >
+        打开
+      </Button>
       <Main>
-        {/* 在React-Router 6里面，所有的Route都需要用Routes来包裹 */}
         <Router>
+          {/* 在React-Router 6里面，所有的Route都需要用Routes来包裹 */}
           <Routes>
-            <Route path="/projects" element={<ProjectList />} />
+            <Route
+              path="/projects"
+              element={
+                <ProjectList setProjectModalOpen={setProjectModalOpen} />
+              }
+            />
             {/* 接参数 *这个符号在这里有什么意思呢？ /* 的意思是匹配 /projects/:projectId 后面必须带点东西，比如/project/18/kanban  */}
             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
             {/* 默认路由 */}
-            <Navigate to={"/projects"} />
+            <Route
+              index
+              element={
+                <ProjectList setProjectModalOpen={setProjectModalOpen} />
+              }
+            />
           </Routes>
         </Router>
       </Main>
+      <ProjectModal
+        projectModalOpen={projectModalOpen}
+        onClose={() => {
+          setProjectModalOpen(false);
+        }}
+      />
     </div>
   );
 };
 
-const PageHeader = () => {
+// 首页顶部
+const PageHeader = (props: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   const { logout, user } = useAuth();
+
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
         <Button type="link" onClick={resetRoute}>
-          <SoftwareLogo width="18rem" color="rgb(38, 132, 255)" />
+          {/* <div style={{transform: 'translate'}}> */}
+          <SoftwareLogo
+            width="20rem"
+            style={{ transform: "translateY(-8px)" }}
+            color="rgb(38, 132, 255)"
+          />
+          {/* </div> */}
         </Button>
-        <HeaderItem>项目</HeaderItem>
-        <HeaderItem>用户</HeaderItem>
+        <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} />
+        <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
         <Dropdown
@@ -62,6 +99,7 @@ const PageHeader = () => {
   );
 };
 
+// -----------------CSS-in-JS------------------
 const Main = styled.main`
   display: grid;
   /* 这里的减法用得很妙 */

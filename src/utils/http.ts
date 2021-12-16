@@ -5,6 +5,8 @@
 import * as qs from 'qs';
 import * as auth from '../auth-provider';
 import { useAuth } from 'context/auth-context';
+import { useCallback } from 'react';
+
 const apiUrl = process.env.REACT_APP_API_URL;
 
 // RequestInit 是从fetch的ts类型提示里获取的
@@ -57,7 +59,7 @@ export const useHttp = () => {
   // type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;  
   // infer 效果到底是啥
   // infer X 就相当于声明了一个变量，这个变量随后可以使用
-  return (...[endpoint, config]:Parameters<typeof http>) => {
-    return http(endpoint, {...config, token: user?.token})
-  }
+  return useCallback(
+    (...[endpoint, config]:Parameters<typeof http>) =>  
+      http(endpoint, {...config, token: user?.token}), [user?.token]);
 }

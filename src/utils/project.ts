@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Project } from 'screens/project-list/list';
 import { cleanObject } from 'utils';
 import { useHttp } from './http';
@@ -10,16 +10,15 @@ export const useProjects = (param?: Partial<Project>) => {
   // 为什么这里要放Project[]?  
   // 这里的data:list 是个什么意思呢？
   const {run, ...result} = useAsync<Project[]>();
-
-  const fetchProjects = () => run(client('projects', {
-    data: cleanObject(param || {}),
-  }))
+  
+  const fetchProjects = useCallback(() => run(client('projects', {
+    data: cleanObject(param || {})})), [param, client]);
   /* 通过参数获取List组件数据 */
   useEffect(() => {
     run(fetchProjects(), {
       retry: fetchProjects
     })
-  }, [param]);
+  }, [param, run, fetchProjects]);
   return result;
 }
 

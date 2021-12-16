@@ -4,7 +4,7 @@ export const isFalse = (value: unknown) => {
   return value === 0 ? false : !value;
 };
 
-// 此函数用于排除对象的键值对出现false 值，却报错
+// 此函数用于排除对象的键值对出现false 值 (防止本身 false值就是有意义却被删除的情况)
 export const isVoid = (value: unknown) =>
   value === undefined || value === null || value === "";
 // 这里直接对对象定义为object类型
@@ -20,6 +20,22 @@ export const cleanObject = (object: { [key: string]: unknown }) => {
   });
   // console.log('newObject', newObject);
   return newObject;
+};
+
+/**
+ * 返回组件的挂载状态,如果还没挂载或者已经卸载，返回false；反之，返回true
+ */
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+
+  useEffect(() => {
+    // 这又是useRef的什么用法呢？
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+  return mountedRef;
 };
 
 /* 自定义空数组useEffect钩子 */

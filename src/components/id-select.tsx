@@ -1,7 +1,7 @@
 import { Select } from "antd";
 import { Raw } from "types";
 
-// 这招真的牛 React.ComponentProps 让Select自带的所有类型都传到了SelectProps里去了
+// 组件透传 React.ComponentProps 让Select自带的所有类型都传到了SelectProps里去了
 type SelectProps = React.ComponentProps<typeof Select>;
 
 // 透传方法真的牛逼

@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Spin, Typography } from "antd";
 import { DevTools } from "jira-dev-tool";
+
 export const Row = styled.div<{
   gap?: number | boolean;
   between?: boolean;
@@ -33,12 +34,14 @@ const FullPage = styled.div`
   align-items: center;
 `;
 
+// 页面加载效果
 export const FullPageLoading = () => (
   <FullPage>
     <Spin size="large" />
   </FullPage>
 );
 
+// 页面登录失败后 显示的一些信息...
 export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
   <FullPage>
     <DevTools />

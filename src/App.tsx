@@ -4,11 +4,13 @@ import { UnauthenticatedApp } from "./unauthenticated-app";
 import { useAuth } from "./context/auth-context";
 import { ErrorBoundary } from "./components/error-boundary";
 import { FullPageErrorFallback } from "components/lib";
+
 /* App.tsx文件 做判断页面是否登录恰到好处 */
 function App() {
   const { user } = useAuth();
   return (
     <div className="App">
+      {/* 错误边界 */}
       <ErrorBoundary fallbackRender={FullPageErrorFallback}>
         {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
       </ErrorBoundary>
