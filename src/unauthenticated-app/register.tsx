@@ -18,7 +18,7 @@ export const RegisterScreen = ({
       // 现在感受到了useAsync 的强大了...
       await run(register(values));
     } catch (e) {
-      onError(e);
+      // onError(e);
     }
   };
 

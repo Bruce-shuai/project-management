@@ -7,81 +7,33 @@ import { useAuth } from "context/auth-context";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
-import { useState } from "react";
 import ProjectModal from "screens/project-list/project-modal";
 import ProjectPopover from "components/project-popover";
+import { useProjectModal } from "screens/project-list/util";
 
 export const AuthenticatedApp = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
-
+  // const {open} = useProjectModal();
   return (
     <div>
-      <PageHeader
-        projectButton={
-          <Button type="link" onClick={() => setProjectModalOpen(true)}>
-            创建项目
-          </Button>
-        }
-      />
-      <Button
-        onClick={() => {
-          setProjectModalOpen(true);
-        }}
-      >
-        打开
-      </Button>
-      <Main>
-        <Router>
-          {/* 在React-Router 6里面，所有的Route都需要用Routes来包裹 */}
+      <Router>
+        <PageHeader />
+        <Main>
           <Routes>
-            <Route
-              path="/projects"
-              element={
-                <ProjectList
-                  projectButton={
-                    <Button
-                      type="link"
-                      onClick={() => setProjectModalOpen(true)}
-                    >
-                      创建项目
-                    </Button>
-                  }
-                />
-              }
-            />
+            <Route path="/projects" element={<ProjectList />} />
             {/* 接参数 *这个符号在这里有什么意思呢？ /* 的意思是匹配 /projects/:projectId 后面必须带点东西，比如/project/18/kanban  */}
             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
             {/* 默认路由 */}
-            <Route
-              index
-              element={
-                <ProjectList
-                  projectButton={
-                    <Button
-                      type="link"
-                      onClick={() => setProjectModalOpen(true)}
-                    >
-                      创建项目
-                    </Button>
-                  }
-                />
-              }
-            />
+            <Route index element={<ProjectList />} />
           </Routes>
-        </Router>
-      </Main>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => {
-          setProjectModalOpen(false);
-        }}
-      />
+        </Main>
+        <ProjectModal />
+      </Router>
     </div>
   );
 };
 
 // 首页顶部
-const PageHeader = (props: { projectButton: JSX.Element }) => {
+const PageHeader = () => {
   const { logout, user } = useAuth();
 
   return (
@@ -96,7 +48,7 @@ const PageHeader = (props: { projectButton: JSX.Element }) => {
           />
           {/* </div> */}
         </Button>
-        <ProjectPopover {...props} />
+        <ProjectPopover />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>

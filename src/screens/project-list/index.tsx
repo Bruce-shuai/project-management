@@ -7,11 +7,11 @@ import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 // import { Test } from "./text";
 import { useUrlQueryParam } from "utils/url";
-import { useProjectsSearchParams } from "./util";
+import { useProjectModal, useProjectsSearchParams } from "./util";
 
-export const ProjectList = (props: { projectButton: JSX.Element }) => {
+export const ProjectList = () => {
   useDocumentTitle("项目列表", true);
-
+  const { open } = useProjectModal();
   const [param, setParam] = useProjectsSearchParams();
   const {
     isLoading,
@@ -25,13 +25,14 @@ export const ProjectList = (props: { projectButton: JSX.Element }) => {
     <Container>
       {/* <Test /> */}
       <h1>项目列表</h1>
-      {props.projectButton}
+      <Button type="link" onClick={open}>
+        创建项目
+      </Button>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
         <Typography.Text type="danger">请求失败{error.message}</Typography.Text>
       ) : null}
       <List
-        projectButton={props.projectButton}
         refresh={retry}
         loading={isLoading}
         users={users || []}

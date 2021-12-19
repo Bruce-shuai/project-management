@@ -1,11 +1,12 @@
 import React from "react";
 import { Divider, List, Popover, Typography, Button } from "antd";
 import { useProjects } from "utils/project";
+import { useProjectModal } from "screens/project-list/util";
 
-export default function ProjectPopover(props: { projectButton: JSX.Element }) {
+export default function ProjectPopover() {
   const { data: project, isLoading } = useProjects(); // 获取一些数据
   const pinnedProjects = project?.filter((project) => project.pin);
-  console.log("project", project);
+  const { open } = useProjectModal();
 
   // 在这里同样是可以写JSX的语法的
   const content = (
@@ -19,7 +20,9 @@ export default function ProjectPopover(props: { projectButton: JSX.Element }) {
         ))}
       </List>
       <Divider />
-      {props.projectButton}
+      <Button type="link" onClick={open}>
+        创建项目
+      </Button>
     </div>
   );
 
