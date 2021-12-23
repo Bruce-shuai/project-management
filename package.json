@@ -20,7 +20,7 @@
     "dayjs": "^1.10.6",
     "eslint-config-prettier": "^8.3.0",
     "history": "^5.1.0",
-    "jira-dev-tool": "1.6.59",
+    "jira-dev-tool": "^1.6.59",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-query": "^3.5.10",

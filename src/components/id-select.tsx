@@ -8,8 +8,8 @@ type SelectProps = React.ComponentProps<typeof Select>;
 interface IdSelectProps
   // Omit: Construct a type with the properties of T except for those in type K.
   extends Omit<SelectProps, "value" | "onChange" | "options"> {
-  value: Raw | null | undefined;
-  onChange: (value?: number) => void;
+  value?: Raw | null | undefined;
+  onChange?: (value?: number) => void;
   defaultOptionName?: string;
   options?: { name: string; id: number }[];
 }
@@ -27,7 +27,8 @@ export const IdSelect = (props: IdSelectProps) => {
     <Select
       // 这里 options?.length 是什么个原理呢？
       value={options?.length ? toNumber(value) : 0}
-      onChange={(value) => onChange(toNumber(value) || undefined)}
+      // 对于函数，也是可以使用?.这样的操作的
+      onChange={(value) => onChange?.(toNumber(value) || undefined)}
       {...restProps}
     >
       {defaultOptionName ? (

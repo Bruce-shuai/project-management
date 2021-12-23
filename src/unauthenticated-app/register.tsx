@@ -2,6 +2,7 @@ import { useAuth } from "context/auth-context";
 import { Form, Input, Typography } from "antd";
 import { LongButton } from "unauthenticated-app";
 import { useAsync } from "utils/useAsync";
+import { ErrorBox } from "components/lib";
 
 export const RegisterScreen = ({
   onError,
@@ -27,7 +28,7 @@ export const RegisterScreen = ({
       {user ? (
         <div>注册成功，用户名: {user?.name} </div>
       ) : (
-        <Typography.Text type="danger">注册失败</Typography.Text>
+        <ErrorBox error={"注册失败"} />
       )}
       <Form.Item
         name="username"

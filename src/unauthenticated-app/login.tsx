@@ -2,6 +2,7 @@ import { useAuth } from "context/auth-context";
 import { Form, Input, Typography } from "antd";
 import { LongButton } from "unauthenticated-app";
 import { useAsync } from "utils/useAsync";
+import { ErrorBox } from "components/lib";
 
 export const LoginScreen = ({
   onError,
@@ -27,7 +28,7 @@ export const LoginScreen = ({
       {user ? (
         <div>登录成功，用户名: {user?.name} </div>
       ) : (
-        <Typography.Text type="danger">登录失败</Typography.Text>
+        <ErrorBox error={"登录失败"} />
       )}
       <Form.Item
         name="username"

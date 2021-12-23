@@ -1,11 +1,11 @@
-import "./wdyr";
+import "./wdyr"; // 检测无限渲染的第三方库，必须放在最顶层
+import "antd/dist/antd.less"; // antd 需要配置的内容
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { DevTools, loadServer } from "jira-dev-tool";
-import "antd/dist/antd.less";
-import { AppProviders } from "./context";
+import { DevTools, loadServer } from "jira-dev-tool"; // 借助jira作为后端提供数据
+import { AppProviders } from "./context"; // 使用context 作为全局数据的提供方
 
 loadServer(() =>
   ReactDOM.render(

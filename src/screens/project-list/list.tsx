@@ -1,15 +1,16 @@
-import { TableProps } from "antd/es/table"; // 注意这里的引用
-import { User } from "./search-panel";
-import { Table, Dropdown, Button, Menu } from "antd";
-import dayjs from "dayjs";
-import { Link } from "react-router-dom";
-import { Pin } from "components/pin";
-import { useEditProject } from "utils/project";
+import { TableProps } from "antd/es/table"; // antd 中 Table 的类型定义
+import { User } from "./search-panel"; // User 的类型定义
+import { Table, Dropdown, Button, Menu } from "antd"; // antd
+import dayjs from "dayjs"; // 格式化时间的第三方库
+import { Link } from "react-router-dom"; // react-router v6
+import { Pin } from "components/pin"; // 小星星：项目收藏或取消收藏
+import { useDeleteProject, useEditProject } from "utils/project"; // 编辑项目
+import { useProjectModal, useProjectsQueryKey } from "./util"; // url问号后的内容对应项目弹窗
 export interface Project {
   id: number;
   name: string;
-  personId: number; // 不该是number类型吗？
-  pin: boolean; // 这个类型是怎么来的？
+  personId: number;
+  pin: boolean;
   organization: string;
   created: number;
 }
@@ -17,15 +18,15 @@ export interface Project {
 // 这里的extends 用得的确挺巧妙的  TableProps 表示Table标签里所有属性的集合的类型
 interface ListProps extends TableProps<Project> {
   users: User[];
-  refresh?: () => void;
 }
 
-// 该组件只起到一个展示ui的作用
 export const List = ({ users, ...props }: ListProps) => {
   // 向服务端发送一个项目编辑请求  PATCH 请求
-  const { mutate } = useEditProject();
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(props.refresh);
+  const { mutate } = useEditProject(useProjectsQueryKey());
+  const { mutate: deleteProject } = useDeleteProject(useProjectsQueryKey());
+  const { startEdit } = useProjectModal();
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const editProject = (id: number) => () => startEdit(id);
   return (
     <Table
       loading
@@ -35,6 +36,8 @@ export const List = ({ users, ...props }: ListProps) => {
         {
           title: <Pin checked={true} disabled={true} />,
           render(value, project) {
+            console.log("project", project);
+
             return (
               <Pin
                 checked={project.pin}
@@ -86,7 +89,15 @@ export const List = ({ users, ...props }: ListProps) => {
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key="edit"></Menu.Item>
+                    <Menu.Item onClick={editProject(project.id)} key="edit">
+                      编辑
+                    </Menu.Item>
+                    <Menu.Item
+                      key="delte"
+                      onClick={() => deleteProject({ id: project.id })}
+                    >
+                      删除
+                    </Menu.Item>
                   </Menu>
                 }
               >
