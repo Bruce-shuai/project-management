@@ -1,23 +1,26 @@
-import {QueryKey, useQueryClient} from 'react-query';
+import { QueryKey, useQueryClient } from "react-query";
+import { reorder } from "utils/reorder";
+import { Task } from "types/task";
 
-export const useConfig = (queryKey:QueryKey, callback:(target: any, old?: any[]) => any[]) => {
+export const useConfig = (
+  queryKey: QueryKey,
+  callback: (target: any, old?: any[]) => any[]
+) => {
   const queryClient = useQueryClient();
-  return { 
-    onMutate: async (target:any) => {
-      const previousTodos = queryClient.getQueryData(queryKey)
-      queryClient.setQueryData(queryKey, (old?: any[]) => {  // 这里的?: 其实是非常有学问的...对于 ...|undefined 
-        return callback(target, old)
-      })
-      return {previousTodos} 
+  return {
+    onSuccess: () => queryClient.invalidateQueries(queryKey),
+    async onMutate(target: any) {
+      const previousItems = queryClient.getQueryData(queryKey);
+      queryClient.setQueryData(queryKey, (old?: any[]) => {
+        return callback(target, old);
+      });
+      return { previousItems };
     },
-    onError: (err:any, newTodo: any, context:any) => {
-      queryClient.setQueryData(queryKey, context?.previousTodos)
+    onError(error: any, newItem: any, context: any) {
+      queryClient.setQueryData(queryKey, context.previousItems);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries(queryKey)
-    },
-  }
-}
+  };
+};
 
 export const useDeleteConfig = (queryKey: QueryKey) =>
   useConfig(
@@ -34,3 +37,16 @@ export const useEditConfig = (queryKey: QueryKey) =>
   );
 export const useAddConfig = (queryKey: QueryKey) =>
   useConfig(queryKey, (target, old) => (old ? [...old, target] : []));
+
+export const useReorderKanbanConfig = (queryKey: QueryKey) =>
+  useConfig(queryKey, (target, old) => reorder({ list: old, ...target }));
+
+export const useReorderTaskConfig = (queryKey: QueryKey) =>
+  useConfig(queryKey, (target, old) => {
+    const orderedList = reorder({ list: old, ...target }) as Task[];
+    return orderedList.map((item) =>
+      item.id === target.fromId
+        ? { ...item, kanbanId: target.toKanbanId }
+        : item
+    );
+  });

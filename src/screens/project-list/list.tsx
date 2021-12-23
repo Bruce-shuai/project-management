@@ -1,5 +1,5 @@
 import { TableProps } from "antd/es/table"; // antd 中 Table 的类型定义
-import { User } from "./search-panel"; // User 的类型定义
+import { User } from "types/user"; // User 的类型定义
 import { Table, Dropdown, Button, Menu } from "antd"; // antd
 import dayjs from "dayjs"; // 格式化时间的第三方库
 import { Link } from "react-router-dom"; // react-router v6

@@ -6,7 +6,7 @@ import { useMount } from "utils";
 import { http } from "utils/http";
 import { useAsync } from "utils/useAsync";
 import * as auth from "../auth-provider"; // 这里的别名用得恰到好处
-import { User } from "../screens/project-list/search-panel";
+import { User } from "types/user";
 
 interface ContextType {
   user: User | null;

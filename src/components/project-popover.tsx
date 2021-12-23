@@ -1,34 +1,43 @@
 import React from "react";
-import { Divider, List, Popover, Typography, Button } from "antd";
+import { Divider, List, Popover, Typography } from "antd";
 import { useProjects } from "utils/project";
+import styled from "@emotion/styled";
+import { ButtonNoPadding } from "components/lib";
 import { useProjectModal } from "screens/project-list/util";
 
-export default function ProjectPopover() {
-  const { data: project, isLoading } = useProjects(); // 获取一些数据
-  const pinnedProjects = project?.filter((project) => project.pin);
+export const ProjectPopover = () => {
   const { open } = useProjectModal();
+  const { data: projects, refetch } = useProjects();
+  const pinnedProjects = projects?.filter((project) => project.pin);
 
-  // 在这里同样是可以写JSX的语法的
   const content = (
-    <div>
-      <Typography.Text type="secondary">收藏项目</Typography.Text>
+    <ContentContainer>
+      <Typography.Text type={"secondary"}>收藏项目</Typography.Text>
       <List>
         {pinnedProjects?.map((project) => (
-          <List.Item>
+          <List.Item key={project.id}>
             <List.Item.Meta title={project.name} />
           </List.Item>
         ))}
       </List>
       <Divider />
-      <Button type="link" onClick={open}>
+      <ButtonNoPadding onClick={open} type={"link"}>
         创建项目
-      </Button>
-    </div>
+      </ButtonNoPadding>
+    </ContentContainer>
   );
 
   return (
-    <Popover placement={"bottom"} content={content}>
-      项目
+    <Popover
+      onVisibleChange={() => refetch()}
+      placement={"bottom"}
+      content={content}
+    >
+      <span>项目</span>
     </Popover>
   );
-}
+};
+
+const ContentContainer = styled.div`
+  min-width: 30rem;
+`;

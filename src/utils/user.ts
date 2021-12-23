@@ -1,18 +1,12 @@
-import { useEffect } from 'react';
-import { User } from 'screens/project-list/search-panel';
-import { cleanObject } from 'utils';
+import { User } from 'types/user';
 import { useHttp } from './http';
-import { useAsync } from './useAsync';
+import { useQuery } from "react-query";
+
 
 // Partial 和 | undefined 这两者之间有什么关系吗？
 export const useUsers = (param?: Partial<User>) => {
   const client = useHttp();
-  const {run, ...result} = useAsync<User[]>();
-
-  useEffect(() => {
-    run(client('users', {
-      data: cleanObject(param || {}),
-    }))
-  }, [param]);
-  return result;
+  return useQuery<User[]>(["users", param], () =>
+    client("users", { data: param })
+  );
 }

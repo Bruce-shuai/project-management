@@ -8,7 +8,8 @@ import { Route, Routes, BrowserRouter as Router } from "react-router-dom"; // re
 import { resetRoute } from "utils"; // 功能函数：用于url返回到首页
 import { ProjectScreen } from "screens/project"; // 项目列表每一项的具体内容
 import ProjectModal from "screens/project-list/project-modal"; // 项目创建弹窗
-import ProjectPopover from "components/project-popover"; // 首页头部 项目栏 鼠标触碰后展示的内容
+import { ProjectPopover } from "components/project-popover"; // 首页头部 项目栏 鼠标触碰后展示的内容
+import { UserPopover } from "components/user-popover";
 
 export const AuthenticatedApp = () => {
   return (
@@ -48,7 +49,7 @@ const PageHeader = () => {
           />
         </Button>
         <ProjectPopover />
-        <span>用户</span>
+        <UserPopover />
       </HeaderLeft>
 
       {/* 首页头部 右侧 */}
